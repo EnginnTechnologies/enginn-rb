@@ -8,6 +8,11 @@ require:
 AllCops:
   TargetRubyVersion: 2.6
   NewCops: enable
+  Exclude:
+    - bin/**/*
 
 Layout/LineLength:
   Max: 100 # default: 120
+
+Style/Documentation:
+  Enabled: false # default: true
