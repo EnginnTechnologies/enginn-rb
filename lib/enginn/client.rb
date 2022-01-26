@@ -27,8 +27,21 @@ module Enginn
         conn.request :authorization, 'Bearer', -> { @api_token }
         conn.request :json
         conn.response :json
+        conn.response :logger
+        conn.response :raise_error
       end
       block_given? ? yield(@connection) : @connection
+    end
+
+    def projects(arg = nil)
+      case arg
+      when String
+        Project.new(self, { uid: arg })
+      when Hash
+        ProjectsIndex.new(self, arg)
+      else
+        ProjectsIndex.new(self)
+      end
     end
   end
 end

@@ -6,6 +6,7 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
+  gem 'debug', '~> 1.4'
   gem 'rake', '~> 13.0'
   gem 'rubocop', '~> 1.21', require: false
   gem 'rubocop-performance', '~> 1.13', require: false
@@ -14,6 +15,6 @@ group :development do
 end
 
 group :test do
-  gem 'simplecov', require: false
   gem 'rspec', '~> 3.0'
+  gem 'simplecov', require: false
 end

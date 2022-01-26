@@ -5,12 +5,7 @@ require 'bundler/setup'
 require 'enginn'
 require 'irb'
 
-module Enginn
-  class Client
-    BASE_URL = ENV['ENGINN_BASE_URL'] || BASE_URL
-  end
-end
-
-client = Enginn::Client.new(api_token: ENV['ENGINN_API_TOKEN'])
+Enginn::Client::BASE_URL = ENV['ENGINN_BASE_URL'] unless ENV['ENGINN_BASE_URL'].nil?
+@client = Enginn::Client.new(api_token: ENV['ENGINN_API_TOKEN'])
 
 IRB.start(__FILE__)
