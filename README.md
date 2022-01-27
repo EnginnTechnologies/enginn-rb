@@ -21,18 +21,29 @@ Or install it yourself as:
 ## Usage
 
 ```rb
+# Create a client
 client = Enginn::Client.new(api_token: 'xxxxx')
+
+# Retrieve a project
 project = client.projects('xxxxx')
 
-characters = project.characters(gender_eq: 'male')
-characters = project.characters.filters(gender_eq: 'female').page(2)
+# Manipulate collections
+characters = project.characters(gender_eq: 'male') # fitlers
 characters.each do |character|
     # ...
 end
 
+# Update a character
 character = project.characters('xxxxx').fetch!
 character.name = 'Pilou'
 character.save!
+
+# Create a new character
+character = Enginn::Character.new(client, project, name: 'Raph', gender: 'male', ...)
+character.save!
+
+# Destroy a character
+character.destroy!
 ```
 
 ## Development

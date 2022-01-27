@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 module Enginn
-  class Project
+  class Project < Resource
+    def self.path
+      'projects'
+    end
+
     def initialize(client, attributes = {})
-      @client = client
-      @attributes = {}
-      sync_attributes_with(attributes)
+      super(client, nil, attributes)
     end
 
     def characters(arg = nil)
@@ -20,39 +22,8 @@ module Enginn
     end
 
     def route
-      "projects/#{@attributes[:uid]}"
-    end
-
-    def fetch!
-      result = request(:get)[:result]
-      sync_attributes_with(result)
-      self
-    end
-
-    def save!
-      result = request(:patch)[:result]
-      sync_attributes_with(result)
-      self
-    end
-
-    def inspect
-      "#<#{self.class} #{@attributes.map { |name, value| "@#{name}=#{value}" }.join(', ')}>"
-    end
-
-    private
-
-    def sync_attributes_with(hash)
-      @attributes.merge!(hash)
-      @attributes.each do |attribute, value|
-        instance_variable_set("@#{attribute}", value)
-        self.class.define_method(attribute) { @attributes[attribute] }
-        self.class.define_method("#{attribute}=") { |arg| @attributes[attribute] = arg }
-      end
-    end
-
-    def request(method)
-      response = @client.connection.public_send(method, "projects/#{@attributes[:uid]}")
-      JSON.parse(JSON[response.body], symbolize_names: true)
+      # TODO: replace `uid` with `id` when PK migration is completed
+      "#{self.class.path}/#{@attributes[:uid]}"
     end
   end
 end

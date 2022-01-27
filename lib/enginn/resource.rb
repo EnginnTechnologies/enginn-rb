@@ -2,18 +2,6 @@
 
 module Enginn
   class Resource
-    def self.path
-      raise 'not implemented'
-    end
-
-    # def self.fetch(client, project, attributes)
-    #   new(client, project, attributes).fetch!
-    # end
-
-    # def self.create(client, project, attributes)
-    #   new(client, project, attributes).create!
-    # end
-
     def initialize(client, project, attributes = {})
       @client = client
       @project = project
@@ -28,8 +16,13 @@ module Enginn
     end
 
     def save!
-      result = request(:patch)[:result]
-      sync_attributes_with(result)
+      response = request(@attributes[:id].nil? ? :post : :patch)
+      sync_attributes_with(response[:result])
+      self
+    end
+
+    def destroy!
+      request(:delete)
       self
     end
 
@@ -38,7 +31,7 @@ module Enginn
     end
 
     def inspect
-      "#<#{self.class} #{@attributes.map { |name, value| "@#{name}=#{value}" }.join(', ')}>"
+      "#<#{self.class} #{@attributes.map { |name, value| "@#{name}=#{value.inspect}" }.join(', ')}>"
     end
 
     private
@@ -53,7 +46,8 @@ module Enginn
     end
 
     def request(method)
-      response = @client.connection.public_send(method, route, @attributes)
+      params = %i[post patch].include?(method) ? @attributes : {}
+      response = @client.connection.public_send(method, route, params)
       JSON.parse(JSON[response.body], symbolize_names: true)
     end
   end
