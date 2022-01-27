@@ -27,7 +27,6 @@ module Enginn
         conn.request :authorization, 'Bearer', -> { @api_token }
         conn.request :json
         conn.response :json
-        conn.response :logger
         conn.response :raise_error
       end
       block_given? ? yield(@connection) : @connection
