@@ -29,7 +29,8 @@ module Enginn
         conn.response :json
         conn.response :raise_error
       end
-      block_given? ? yield(@connection) : @connection
+      yield(@connection) if block_given?
+      @connection
     end
 
     def projects(arg = nil)

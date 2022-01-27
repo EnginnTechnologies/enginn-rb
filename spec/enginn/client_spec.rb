@@ -10,10 +10,8 @@ RSpec.describe Enginn::Client do
       end
     end
 
-    context 'when no block is given' do
-      it 'returns a Faraday::Connection object' do
-        expect(client.connection).to be_a(Faraday::Connection)
-      end
+    it 'returns a Faraday::Connection object' do
+      expect(client.connection).to be_a(Faraday::Connection)
     end
 
     it 'initializes the connection with the right base URL' do
