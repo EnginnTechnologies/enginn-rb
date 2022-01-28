@@ -8,20 +8,17 @@ module Enginn
 
     attr_reader :api_token, :adapter
 
-    # Public: Create a new client.
-    #
-    # :api_token - The String API token to use for this client.
-    # :adapter   - The Symbol Faraday adapter to use (default: Faraday.default_adapter)
+    # @param api_token [String] The API token to use
+    # @param adapter [Symbol] The Faraday adapter to use
     def initialize(api_token:, adapter: Faraday.default_adapter)
       @api_token = api_token
       @adapter = adapter
     end
 
-    # Public: Get a Faraday connection to the API with relevant middlewares (authorization and JSON)
+    # Get a connection to the API.
     #
-    # If a block is given, yields the Faraday::Connection.
-    #
-    # Returns a Faraday::Connection.
+    # @yieldparam connection [Faraday::Connection] if a block is given
+    # @return [Faraday::Connection]
     def connection
       @connection ||= Faraday.new(BASE_URL) do |conn|
         conn.request :authorization, 'Bearer', -> { @api_token }
@@ -33,6 +30,21 @@ module Enginn
       @connection
     end
 
+    # Retrieve one or multiple project(s).
+    #
+    # If no discriminant is given, return a {Enginn::ProjectsIndex} with no
+    # filters. If a Hash is given, return a {Enginn::ProjectsIndex} filtered
+    # with the given Hash.
+    # If a String is given, return a {Enginn::Project} with its UID set as the
+    # given String.
+    #
+    # @example
+    #   client.projects # => Enginn::ProjectsIndex
+    #   client.projects(name: 'New World') # => Enginn::ProjectsIndex
+    #   client.projects('<uid>') # => Enginn::Project
+    #
+    # @param discriminant [nil, String, Hash]
+    # @return [Enginn::Project, Enginn::ProjectsIndex]
     def projects(discriminant = nil)
       case discriminant
       when String
