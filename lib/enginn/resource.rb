@@ -1,7 +1,39 @@
 # frozen_string_literal: true
 
 module Enginn
+  # A Resource can be a Character, a Take, or anything described in the
+  # Enginn API doc (https://app.enginn.tech/api/docs).
+  #
+  # A Resource depends on a Client that will be used for actual HTTP operations
+  # and is relative to a parent Project (see {#initialize} parameters). When a
+  # Resource is fetched through {#fetch!} or {#save!}, any received attributes
+  # from the API is synced with the object such as it is available as an
+  # instance method.
+  #
+  # @example
+  #   character = Enginn::Character(client, project, { id: 42 })
+  #   character.name # NoMethodError
+  #   character.fetch!
+  #   character.name # => 'Rocky'
+  #
+  # A Resource whose attributes include an ID will be considered as already
+  # existing and as such, subsequent calls to {#save!} will issue a PATCH
+  # request. Otherwise, a POST request will be issued instead, allowing the
+  # creation of a new Resource.
+  #
+  # @example
+  #   color = Enginn::Color.new(client, project, { code: '#16161D' })
+  #   color.save! # POST request / new color created
+  #   color.id # => 24
+  #   color.name = 'Eigengrau'
+  #   color.save! # PATCH request / the color is updated
   class Resource
+    attr_reader :client, :project
+    attr_accessor :attributes
+
+    # @param client [Enginn::Client] The client that will be used for this resource
+    # @param project [Enginn::Project] The parent project of this resource
+    # @param attributes [Hash] The attributes to initialize the resource with
     def initialize(client, project, attributes = {})
       @client = client
       @project = project

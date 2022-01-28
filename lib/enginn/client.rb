@@ -33,12 +33,12 @@ module Enginn
       @connection
     end
 
-    def projects(arg = nil)
-      case arg
+    def projects(discriminant = nil)
+      case discriminant
       when String
-        Project.new(self, { uid: arg })
+        Project.new(self, { uid: discriminant })
       when Hash
-        ProjectsIndex.new(self, arg)
+        ProjectsIndex.new(self, discriminant)
       else
         ProjectsIndex.new(self)
       end

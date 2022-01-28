@@ -14,5 +14,9 @@ AllCops:
 Layout/LineLength:
   Max: 100 # default: 120
 
+Metrics/BlockLength:
+  Exclude:
+  - spec/**/*
+
 Style/Documentation:
   Enabled: false # default: true

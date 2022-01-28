@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_filter '/spec/'
+end
+
+Bundler.require(:default, :test)
 
 require 'enginn'
 
