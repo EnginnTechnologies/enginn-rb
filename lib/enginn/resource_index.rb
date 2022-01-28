@@ -18,7 +18,7 @@ module Enginn
   #
   # @abstract Override the {.resource} method to implement.
   class ResourceIndex
-    # Define the type of {Enginn::Resource} to use with this {Enginn::ResourceIndex}.
+    # Define the type of {Enginn::Resource} to use with this kind of {Enginn::ResourceIndex}.
     #
     # @api private
     # @return [Enginn::Resource]
@@ -36,8 +36,8 @@ module Enginn
 
     attr_reader :client, :project, :filters, :pagination
 
-    # @param client [Enginn::Client] The {Enginn::Client} to use
-    # @param project [Enginn::Project] The parent {Enginn::Project} of the indexed resource
+    # @param client [Enginn::Client] The client to use
+    # @param project [Enginn::Project] The parent project of the indexed resource
     # @param filters [Hash, nil] An optional Hash of filters (see {#where})
     # TODO: remove `filters` from constructor to enforce consistency and use of #where
     def initialize(client, project, filters = nil)
@@ -101,10 +101,11 @@ module Enginn
     private
 
     def request
-      # TODO: refactor params using native Faraday params syntax
-      pagination = "per=#{@pagination[:per]}&page=#{@pagination[:current]}"
-      filters = @filters.map { |filter, val| "q[#{filter}]=#{val}" }.join('&')
-      response = @client.connection.get("#{route}?#{pagination}&#{filters}")
+      response = @client.connection.get(route, {
+        per: @pagination[:per],
+        page: @pagination[:page],
+        q: @filters
+      })
       JSON.parse(JSON[response.body], symbolize_names: true)
     end
   end

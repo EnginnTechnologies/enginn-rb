@@ -11,12 +11,30 @@ AllCops:
   Exclude:
     - bin/**/*
 
+# ------------------------------------------------------------------------------
+# DEPARTMENT LAYOUT
+# ------------------------------------------------------------------------------
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent # default: special_inside_parentheses
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent # default: special_inside_parentheses
+
 Layout/LineLength:
   Max: 100 # default: 120
+
+# ------------------------------------------------------------------------------
+# DEPARTMENT METRICS
+# ------------------------------------------------------------------------------
 
 Metrics/BlockLength:
   Exclude:
   - spec/**/*
+
+# ------------------------------------------------------------------------------
+# DEPARTMENT STYLE
+# ------------------------------------------------------------------------------
 
 Style/Documentation:
   Enabled: false # default: true
