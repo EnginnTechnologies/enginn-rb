@@ -2,17 +2,13 @@
 
 module Enginn
   class ResourceIndex
-    def self.resource
-      raise 'not implemented'
-    end
-
     def self.path
       resource.path
     end
 
     include Enumerable
 
-    def initialize(client, project, filters = {})
+    def initialize(client, project, filters = nil)
       @client = client
       @project = project
       @filters = filters || {}

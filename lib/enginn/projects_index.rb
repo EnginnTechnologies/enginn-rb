@@ -1,52 +1,29 @@
 # frozen_string_literal: true
 
 module Enginn
-  class ProjectsIndex
-    include Enumerable
-
-    def initialize(client, filters = {})
-      @client = client
-      @filters = filters || {}
-      @pagination = { current: 1 }
+  class ProjectsIndex < ResourceIndex
+    def self.resource
+      Project
     end
 
-    def each(&block)
-      fetch! if @pagination[:last].nil? || @pagination[:current] <= @pagination[:last]
-      @collection.each(&block)
+    def initialize(client, filters = nil)
+      super(client, nil, filters)
     end
 
-    def page(page)
-      @pagination[:current] = page
-      self
+    def route
+      'projects'
     end
 
-    def per(per)
-      @pagination[:per] = per
-      self
-    end
-
-    def filters(filters)
-      @filters = filters || {}
-      self
-    end
-
+    # HACK: needed to override the way individual resources are initialized
+    # because Project#initiliaze only take 2 arguments.
+    # REVIEW: Should we use keywords arguments for Resource#initiliaze instead ?
     def fetch!
-      pagination = "per=#{@pagination[:per]}&page=#{@pagination[:current]}"
-      filters = @filters.map { |filter, val| "q[#{filter}]=#{val}" }.join('&')
-      response = @client.connection.get("projects?#{pagination}&#{filters}")
-      body = JSON.parse(JSON[response.body], symbolize_names: true)
-
-      @pagination = body[:pagination]
-      @collection = body[:result].map { |attributes| Project.new(@client, attributes) }
-
-      self
-    end
-
-    def inspect
-      attributes = instance_variables.map do |var|
-        "#{var}=#{instance_variable_get(var)}"
+      response = request
+      @pagination = response[:pagination]
+      @collection = response[:result].map do |attributes|
+        self.class.resource.new(@client, attributes)
       end
-      "#<#{self.class} #{attributes.join(', ')}>"
+      self
     end
   end
 end
