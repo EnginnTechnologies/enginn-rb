@@ -104,4 +104,10 @@ RSpec.describe Enginn::Resource do
     #   raise StandardError
     # end
   end
+
+  describe '#inspect' do
+    it 'returns a string' do
+      expect(FakeResource.new(client, project).inspect).to be_a(String)
+    end
+  end
 end
