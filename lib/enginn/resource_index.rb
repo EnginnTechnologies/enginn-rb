@@ -49,8 +49,12 @@ module Enginn
 
     # @yieldparam item [Enginn::Resource]
     def each(&block)
-      fetch! if @pagination[:last].nil? || @pagination[:current] < @pagination[:last]
-      @collection.each(&block)
+      @pagination = { current: 1 } # Reset pagination to avoid messing with last run's
+      while @pagination[:last].nil? || @pagination[:current] < @pagination[:last]
+        fetch!
+        @collection.each(&block)
+        pagination[:current] += 1
+      end
     end
 
     # @param page [Integer] The page number
@@ -103,9 +107,9 @@ module Enginn
     def request
       response = @client.connection.get(route, {
         per: @pagination[:per],
-        page: @pagination[:page],
+        page: @pagination[:current],
         q: @filters
-      })
+      }.reject { |_, value| value.nil? || (value.respond_to?(:empty?) && value.empty?) })
       JSON.parse(JSON[response.body], symbolize_names: true)
     end
   end

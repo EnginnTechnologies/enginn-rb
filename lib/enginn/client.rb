@@ -21,6 +21,7 @@ module Enginn
     # @return [Faraday::Connection]
     def connection
       @connection ||= Faraday.new(BASE_URL) do |conn|
+        conn.adapter @adapter
         conn.request :authorization, 'Bearer', -> { @api_token }
         conn.request :json
         conn.response :json
