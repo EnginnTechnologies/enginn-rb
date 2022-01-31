@@ -23,11 +23,21 @@ module Enginn
   #
   # @example
   #   color = Enginn::Color.new(client, project, { code: '#16161D' })
-  #   color.save! # POST request / new color created
+  #   color.save! # POST request (i.e. a new color created)
   #   color.id # => 24
   #   color.name = 'Eigengrau'
-  #   color.save! # PATCH request / the color is updated
+  #   color.save! # PATCH request (i.e. the color is updated)
+  #
+  # @abstract Override the {.path} method to implement.
   class Resource
+    # Get the path to use for this kind of {Enginn::Resource}
+    #
+    # @api private
+    # @return [String]
+    def self.path
+      raise NotImplementedError
+    end
+
     attr_reader :client, :project
     attr_accessor :attributes
 
@@ -38,32 +48,42 @@ module Enginn
       @client = client
       @project = project
       @attributes = {}
-      sync_attributes_with(attributes)
+      sync_attributes_with(attributes || {})
     end
 
+    # @raise [Faraday::Error] if something goes wrong during the request
+    # @return [Enginn::Resource]
     def fetch!
       result = request(:get)[:result]
       sync_attributes_with(result)
       self
     end
 
+    # @raise [Faraday::Error] if something goes wrong during the request
+    # @return [Enginn::Resource]
     def save!
       response = request(@attributes[:id].nil? ? :post : :patch)
       sync_attributes_with(response[:result])
       self
     end
 
+    # @raise [Faraday::Error] if something goes wrong during the request
+    # @return [Enginn::Resource]
     def destroy!
+      # TODO: find a way to properly notice the user that the deletion succeeded
       request(:delete)
       self
     end
 
-    def route
-      "#{@project.route}/#{self.class.path}/#{@attributes[:id]}"
-    end
-
+    # @return [String]
     def inspect
       "#<#{self.class} #{@attributes.map { |name, value| "@#{name}=#{value.inspect}" }.join(', ')}>"
+    end
+
+    # @api private
+    # @return [String]
+    def route
+      "#{@project.route}/#{self.class.path}/#{@attributes[:id]}"
     end
 
     private
