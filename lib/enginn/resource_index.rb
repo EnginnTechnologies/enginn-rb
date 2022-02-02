@@ -34,14 +34,10 @@ module Enginn
 
     include Enumerable
 
-    attr_reader :client, :project, :filters, :pagination
+    attr_reader :project, :filters, :pagination
 
-    # @param client [Enginn::Client] The client to use
     # @param project [Enginn::Project] The parent project of the indexed resource
-    # @param filters [Hash, nil] An optional Hash of filters (see {#where})
-    # TODO: remove `filters` from constructor to enforce consistency and use of #where
-    def initialize(client, project, filters = nil)
-      @client = client
+    def initialize(project)
       @project = project
       @filters = filters || {}
       @pagination = { current: 1 }
@@ -83,7 +79,7 @@ module Enginn
       response = request
       @pagination = response[:pagination]
       @collection = response[:result].map do |attributes|
-        self.class.resource.new(@client, @project, attributes)
+        self.class.resource.new(@project, attributes)
       end
       self
     end
@@ -105,7 +101,7 @@ module Enginn
     private
 
     def request
-      response = @client.connection.get(route, {
+      response = @project.client.connection.get(route, {
         per: @pagination[:per],
         page: @pagination[:current],
         q: @filters

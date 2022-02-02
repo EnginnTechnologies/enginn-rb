@@ -6,8 +6,12 @@ module Enginn
       Project
     end
 
-    def initialize(client, filters = nil)
-      super(client, nil, filters)
+    attr_reader :client
+
+    # @param client [Enginn::Client] The client to use with this project and resources
+    def initialize(client)
+      @client = client
+      super(self)
     end
 
     def route
@@ -15,10 +19,6 @@ module Enginn
     end
 
     def fetch!
-      # HACK: needed to override the way individual resources are initialized
-      # because Project#initiliaze only take 2 arguments.
-      # REVIEW: Should we use keywords arguments for Resource#initiliaze instead ?
-      # Or accepts any *args ?
       response = request
       @pagination = response[:pagination]
       @collection = response[:result].map do |attributes|

@@ -5,9 +5,9 @@ require 'bundler/setup'
 require 'enginn'
 require 'irb'
 
-Enginn::Client::BASE_URL = ENV['ENGINN_BASE_URL'] unless ENV['ENGINN_BASE_URL'].nil?
 @client = Enginn::Client.new(api_token: ENV['ENGINN_API_TOKEN'])
 @client.connection do |conn|
+  conn.url_prefix = ENV['ENGINN_BASE_URL'] || Enginn::Client::BASE_URL
   conn.response :logger
 end
 

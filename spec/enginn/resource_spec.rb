@@ -57,7 +57,7 @@ RSpec.describe Enginn::Resource do
   end
 
   describe '#fetch!' do
-    let(:resource) { FakeResource.new(client, project, { id: 42 }) }
+    let(:resource) { FakeResource.new(project, { id: 42 }) }
 
     before { resource.fetch! }
 
@@ -74,7 +74,7 @@ RSpec.describe Enginn::Resource do
 
   describe '#save!' do
     context 'when the resource has no ID' do
-      let(:resource) { FakeResource.new(client, project, { name: 'Fake' }) }
+      let(:resource) { FakeResource.new(project, { name: 'Fake' }) }
 
       before { resource.save! }
 
@@ -84,7 +84,7 @@ RSpec.describe Enginn::Resource do
     end
 
     context 'when the resource has an ID' do
-      let(:resource) { FakeResource.new(client, project, { id: 42, name: 'Fake' }) }
+      let(:resource) { FakeResource.new(project, { id: 42, name: 'Fake' }) }
 
       before do
         resource.name = 'New Name'
@@ -107,7 +107,7 @@ RSpec.describe Enginn::Resource do
 
   describe '#inspect' do
     it 'returns a string' do
-      expect(FakeResource.new(client, project).inspect).to be_a(String)
+      expect(FakeResource.new(project).inspect).to be_a(String)
     end
   end
 end

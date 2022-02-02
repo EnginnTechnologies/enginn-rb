@@ -51,7 +51,7 @@ module Enginn
       when String
         Project.new(self, { uid: discriminant })
       when Hash
-        ProjectsIndex.new(self, discriminant)
+        ProjectsIndex.new(self).where(discriminant)
       else
         ProjectsIndex.new(self)
       end

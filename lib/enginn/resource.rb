@@ -38,14 +38,12 @@ module Enginn
       raise NotImplementedError
     end
 
-    attr_reader :client, :project
+    attr_reader :project
     attr_accessor :attributes
 
-    # @param client [Enginn::Client] The client that will be used for this resource
     # @param project [Enginn::Project] The parent project of this resource
     # @param attributes [Hash] The attributes to initialize the resource with
-    def initialize(client, project, attributes = {})
-      @client = client
+    def initialize(project, attributes = {})
       @project = project
       @attributes = {}
       sync_attributes_with(attributes || {})
@@ -98,8 +96,9 @@ module Enginn
     end
 
     def request(method)
-      params = %i[post patch].include?(method) ? @attributes : {}
-      response = @client.connection.public_send(method, route, params)
+      resource_name = self.class.name.split('::').last.downcase
+      params = %i[post patch].include?(method) ? { resource_name => @attributes } : {}
+      response = @project.client.connection.public_send(method, route, params)
       JSON.parse(JSON[response.body], symbolize_names: true)
     end
   end

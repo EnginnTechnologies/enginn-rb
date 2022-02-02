@@ -6,8 +6,12 @@ module Enginn
       'projects'
     end
 
+    attr_reader :client
+
+    # @param client [Enginn::Client] The client to use with this project and its sub-resources
     def initialize(client, attributes = {})
-      super(client, nil, attributes)
+      @client = client
+      super(self, attributes)
     end
 
     # Retrieve one or multiple characters(s).
@@ -52,6 +56,7 @@ module Enginn
       end
     end
 
+    # @api private
     def route
       # TODO: replace `uid` with `id` when PK migration is completed
       "#{self.class.path}/#{@attributes[:uid]}"

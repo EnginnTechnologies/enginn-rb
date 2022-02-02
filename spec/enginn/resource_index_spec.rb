@@ -61,16 +61,16 @@ RSpec.describe Enginn::ResourceIndex do
 
   describe '#initialize' do
     it 'sets the current page to 1' do
-      expect(FakesIndex.new(client, project).pagination[:current]).to eq(1)
+      expect(FakesIndex.new(project).pagination[:current]).to eq(1)
     end
 
     it 'sets empty filters' do
-      expect(FakesIndex.new(client, project).filters).to eq({})
+      expect(FakesIndex.new(project).filters).to eq({})
     end
   end
 
   describe '#each' do
-    let(:fakes_index) { FakesIndex.new(client, project) }
+    let(:fakes_index) { FakesIndex.new(project) }
 
     before do
       stubs.get("#{Enginn::Client::BASE_URL}/projects/1/fakes") do |env|
@@ -92,7 +92,7 @@ RSpec.describe Enginn::ResourceIndex do
   end
 
   describe '#page' do
-    let(:fakes_index) { FakesIndex.new(client, project) }
+    let(:fakes_index) { FakesIndex.new(project) }
 
     it 'updates the current page' do
       fakes_index.page(2)
@@ -105,7 +105,7 @@ RSpec.describe Enginn::ResourceIndex do
   end
 
   describe '#per' do
-    let(:fakes_index) { FakesIndex.new(client, project) }
+    let(:fakes_index) { FakesIndex.new(project) }
 
     it 'updates the number of items per page' do
       fakes_index.per(10)
@@ -118,7 +118,7 @@ RSpec.describe Enginn::ResourceIndex do
   end
 
   describe '#where' do
-    let(:fakes_index) { FakesIndex.new(client, project) }
+    let(:fakes_index) { FakesIndex.new(project) }
 
     context 'when there is no existing filters' do
       it 'sets the filters to equal the given argument' do
@@ -143,7 +143,7 @@ RSpec.describe Enginn::ResourceIndex do
 
   describe '#inspect' do
     it 'returns a string' do
-      expect(FakesIndex.new(client, project).inspect).to be_a(String)
+      expect(FakesIndex.new(project).inspect).to be_a(String)
     end
   end
 end
