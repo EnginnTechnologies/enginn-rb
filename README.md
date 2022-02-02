@@ -39,7 +39,7 @@ character.name = 'Pilou'
 character.save!
 
 # Create a new character
-character = Enginn::Character.new(client, project, name: 'Raph', gender: 'male', ...)
+character = Enginn::Character.new(project, name: 'Raph', gender: 'male', ...)
 character.save!
 
 # Destroy a character

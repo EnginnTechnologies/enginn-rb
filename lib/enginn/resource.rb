@@ -11,7 +11,7 @@ module Enginn
   # instance method.
   #
   # @example
-  #   character = Enginn::Character(client, project, { id: 42 })
+  #   character = Enginn::Character(project, { id: 42 })
   #   character.name # NoMethodError
   #   character.fetch!
   #   character.name # => 'Rocky'
@@ -22,7 +22,7 @@ module Enginn
   # creation of a new Resource.
   #
   # @example
-  #   color = Enginn::Color.new(client, project, { code: '#16161D' })
+  #   color = Enginn::Color.new(project, { code: '#16161D' })
   #   color.save! # POST request (i.e. a new color created)
   #   color.id # => 24
   #   color.name = 'Eigengrau'
