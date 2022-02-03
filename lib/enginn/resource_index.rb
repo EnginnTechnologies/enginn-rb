@@ -34,46 +34,60 @@ module Enginn
 
     include Enumerable
 
-    attr_reader :project, :filters, :pagination
+    attr_reader :project
+    attr_accessor :filters, :pagination
 
     # @param project [Enginn::Project] The parent project of the indexed resource
     def initialize(project)
       @project = project
-      @filters = filters || {}
+      @filters = {}
       @pagination = { current: 1 }
     end
 
     # @yieldparam item [Enginn::Resource]
+    # @return [self]
     def each(&block)
-      @pagination = { current: 1 } # Reset pagination to avoid messing with last run's
-      while @pagination[:last].nil? || @pagination[:current] < @pagination[:last]
+      fetch!
+      @collection.each(&block)
+      return self if @pagination[:locked]
+
+      while @pagination[:current] < @pagination[:last]
+        pagination[:current] += 1
         fetch!
         @collection.each(&block)
-        pagination[:current] += 1
       end
+
+      @pagination = { current: 1 }
+      self
     end
 
     # @param page [Integer] The page number
-    # @return [Enginn::ResourceIndex]
+    # @return [Enginn::ResourceIndex] A new index with updated pagination
     def page(page)
-      @pagination[:current] = page
-      self
+      new_index = clone
+      new_index.pagination = @pagination.merge(current: page, locked: true)
+      new_index
     end
 
     # @param per [Integer] The number of items per page
-    # @return [Enginn::ResourceIndex]
+    # @return [Enginn::ResourceIndex] A new index with updated pagination
     def per(per)
-      @pagination[:per] = per
-      self
+      new_index = clone
+      new_index.pagination = @pagination.merge(per: per)
+      new_index
     end
 
     # @param filters [Hash] Filters as you would use them in the `q` object with the API.
-    # @return [Enginn::ResourceIndex]
+    # @return [Enginn::ResourceIndex] A new filtered index
     def where(filters)
-      @filters.merge!(filters || {})
-      self
+      new_index = clone
+      new_index.filters = @filters.merge(filters || {})
+      new_index
     end
 
+    # Fetch the current page from the API. Resulting items of the collection are
+    # wrapped in the corresponding {Enginn::Resource} subclass.
+    #
     # @return [Enginn::ResourceIndex]
     def fetch!
       response = request

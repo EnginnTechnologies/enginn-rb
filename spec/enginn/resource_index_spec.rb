@@ -94,26 +94,24 @@ RSpec.describe Enginn::ResourceIndex do
   describe '#page' do
     let(:fakes_index) { FakesIndex.new(project) }
 
-    it 'updates the current page' do
-      fakes_index.page(2)
-      expect(fakes_index.pagination[:current]).to eq(2)
+    it 'returns a copy of the object' do
+      expect(fakes_index.page(2)).not_to be(fakes_index)
     end
 
-    it 'returns self' do
-      expect(fakes_index.page(2)).to be(fakes_index)
+    it 'updates the current page' do
+      expect(fakes_index.page(2).pagination[:current]).to eq(2)
     end
   end
 
   describe '#per' do
     let(:fakes_index) { FakesIndex.new(project) }
 
-    it 'updates the number of items per page' do
-      fakes_index.per(10)
-      expect(fakes_index.pagination[:per]).to eq(10)
+    it 'returns a copy of the object' do
+      expect(fakes_index.per(10)).not_to be(fakes_index)
     end
 
-    it 'returns self' do
-      expect(fakes_index.per(10)).to be(fakes_index)
+    it 'updates the number of items per page' do
+      expect(fakes_index.per(10).pagination[:per]).to eq(10)
     end
   end
 
@@ -122,22 +120,19 @@ RSpec.describe Enginn::ResourceIndex do
 
     context 'when there is no existing filters' do
       it 'sets the filters to equal the given argument' do
-        fakes_index.where(foo: 1)
-        expect(fakes_index.filters).to eq(foo: 1)
+        expect(fakes_index.where(foo: 1).filters).to eq(foo: 1)
       end
     end
 
     context 'when there are filters already' do
-      before { fakes_index.where(foo: 1) }
-
       it 'merges existing filters and new ones' do
-        fakes_index.where(bar: 2)
-        expect(fakes_index.filters).to eq(foo: 1, bar: 2)
+        index = fakes_index.where(foo: 1)
+        expect(index.where(bar: 2).filters).to eq(foo: 1, bar: 2)
       end
     end
 
-    it 'returns self' do
-      expect(fakes_index.where({})).to be(fakes_index)
+    it 'returns a copy of the object' do
+      expect(fakes_index.where(bar: 2)).not_to be(fakes_index)
     end
   end
 
