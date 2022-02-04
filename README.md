@@ -25,16 +25,16 @@ Or install it yourself as:
 client = Enginn::Client.new(api_token: 'xxxxx')
 
 # Retrieve a project
-project = client.projects('xxxxx')
+project = client.projects.where(id: 'xxxxx').first
 
 # Manipulate collections
-characters = project.characters(gender_eq: 'male') # fitlers
+characters = project.characters.where(gender_eq: 'male')
 characters.each do |character|
     # ...
 end
 
 # Update a character
-character = project.characters('xxxxx').fetch!
+character = project.characters.first
 character.name = 'Pilou'
 character.save!
 
