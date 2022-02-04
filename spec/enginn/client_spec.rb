@@ -27,5 +27,12 @@ RSpec.describe Enginn::Client do
     it 'does not set any filters on the index' do
       expect(client.projects.filters).to be_empty
     end
+
+    it 'does not make any request' do
+      connection = client.connection
+      allow(connection).to receive(:get)
+      client.projects
+      expect(connection).not_to have_received(:get)
+    end
   end
 end
