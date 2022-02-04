@@ -28,8 +28,7 @@ module Enginn
 
     # @api private
     def route
-      # TODO: replace `uid` with `id` when PK migration is completed
-      "#{self.class.path}/#{@attributes[:uid]}"
+      "#{self.class.path}/#{@attributes[:id]}"
     end
   end
 end

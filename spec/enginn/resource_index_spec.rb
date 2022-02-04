@@ -45,7 +45,7 @@ end
 RSpec.describe Enginn::ResourceIndex do
   let(:stubs) { Faraday::Adapter::Test::Stubs.new }
   let(:client) { Enginn::Client.new(api_token: '12345') }
-  let(:project) { Enginn::Project.new(client, { uid: 1 }) }
+  let(:project) { Enginn::Project.new(client, { id: 1 }) }
 
   before do
     client.connection do |conn|

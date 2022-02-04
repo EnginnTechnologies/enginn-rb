@@ -8,7 +8,7 @@ end
 
 RSpec.describe Enginn::Resource do
   let(:client) { Enginn::Client.new(api_token: '12345') }
-  let(:project) { Enginn::Project.new(client, { uid: 1 }) }
+  let(:project) { Enginn::Project.new(client, id: 1) }
 
   before do
     client.connection do |conn|
@@ -17,7 +17,7 @@ RSpec.describe Enginn::Resource do
           [
             200,
             { 'Content-Type': 'application/json' },
-            { result: { uid: 1, name: 'Fake Project' } }
+            { result: { id: 1, name: 'Fake Project' } }
           ]
         end
         stub.get("#{Enginn::Client::BASE_URL}/projects/1/fakes/42") do |_|
