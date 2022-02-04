@@ -6,7 +6,7 @@ module Enginn
   #
   # A Resource depends on a Client that will be used for actual HTTP operations
   # and is relative to a parent Project (see {#initialize} parameters). When a
-  # Resource is fetched through {#fetch!} or {#save!}, any received attributes
+  # Resource is fetched through {#fetch} or {#save}, any received attributes
   # from the API is synced with the object such as it is available as an
   # instance method.
   #
@@ -17,16 +17,16 @@ module Enginn
   #   character.name # => 'Rocky'
   #
   # A Resource whose attributes include an ID will be considered as already
-  # existing and as such, subsequent calls to {#save!} will issue a PATCH
+  # existing and as such, subsequent calls to {#save} will issue a PATCH
   # request. Otherwise, a POST request will be issued instead, allowing the
   # creation of a new Resource.
   #
   # @example
   #   color = Enginn::Color.new(project, { code: '#16161D' })
-  #   color.save! # POST request (i.e. a new color created)
+  #   color.save # POST request (i.e. a new color created)
   #   color.id # => 24
   #   color.name = 'Eigengrau'
-  #   color.save! # PATCH request (i.e. the color is updated)
+  #   color.save # PATCH request (i.e. the color is updated)
   #
   # @abstract Override the {.path} method to implement.
   class Resource
@@ -35,10 +35,10 @@ module Enginn
     # @api private
     # @return [String]
     def self.path
-      raise NotImplementedError
+      raise "path is not overriden for #{self}"
     end
 
-    attr_reader :project
+    attr_reader :project, :errors
     attr_accessor :attributes
 
     # @param project [Enginn::Project] The parent project of this resource
@@ -46,31 +46,67 @@ module Enginn
     def initialize(project, attributes = {})
       @project = project
       @attributes = {}
+      @errors = []
       sync_attributes_with(attributes || {})
     end
 
     # @raise [Faraday::Error] if something goes wrong during the request
-    # @return [Enginn::Resource]
+    # @return [true] if the requested has succeeded
     def fetch!
       result = request(:get)[:result]
       sync_attributes_with(result)
-      self
+      true
+    end
+
+    # Same as {#fetch!} but return false instead of raising an exception.
+    # Also fill in {#errors} with the server response.
+    # @see fetch!
+    # @return [Boolean]
+    def fetch
+      fetch!
+      true
+    rescue Faraday::Error => e
+      @errors << e.response
+      false
     end
 
     # @raise [Faraday::Error] if something goes wrong during the request
-    # @return [Enginn::Resource]
+    # @return [true] if the requested has succeeded
     def save!
       response = request(@attributes[:id].nil? ? :post : :patch)
       sync_attributes_with(response[:result])
-      self
+      true
+    end
+
+    # Same as {#save!} but return false instead of raising an exception.
+    # Also fill in {#errors} with the server response.
+    # @see save!
+    # @return [Boolean]
+    def save
+      save!
+      true
+    rescue Faraday::Error => e
+      @errors << e.response
+      false
     end
 
     # @raise [Faraday::Error] if something goes wrong during the request
-    # @return [Enginn::Resource]
+    # @return [true] if the requested has succeeded
     def destroy!
-      # TODO: find a way to properly notice the user that the deletion succeeded
       request(:delete)
-      self
+      true
+    end
+
+    # Same as {#destroy!} but return false instead of raising an exception.
+    # Also fill in {#errors} with the server response.
+    # @see destroy!
+    # @return [Boolean]
+    def destroy
+      destroy!
+      true
+    rescue Faraday::Error => e
+      @errors << e.response
+      false
     end
 
     # @return [String]

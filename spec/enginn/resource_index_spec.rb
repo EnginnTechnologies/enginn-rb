@@ -69,6 +69,79 @@ RSpec.describe Enginn::ResourceIndex do
     end
   end
 
+  describe '#fetch!' do
+    let(:fakes_index) { FakesIndex.new(project) }
+
+    context 'when the request has succeeded' do
+      before do
+        stubs.get("#{Enginn::Client::BASE_URL}/projects/1/fakes") do |env|
+          ApiStub.new(env).response
+        end
+      end
+
+      it 'returns true' do
+        expect(fakes_index.fetch!).to be true
+      end
+    end
+
+    context 'when the request has failed' do
+      before do
+        stubs.get("#{Enginn::Client::BASE_URL}/projects/1/fakes") do
+          [
+            500,
+            { 'Content-Type' => 'application/json' },
+            { error: { foo: 'this is an error' } }
+          ]
+        end
+      end
+
+      it 'raises an error' do
+        expect { fakes_index.fetch! }.to raise_error(Faraday::Error)
+      end
+    end
+  end
+
+  describe '#fetch' do
+    let(:fakes_index) { FakesIndex.new(project) }
+
+    context 'when the request has succeeded' do
+      before do
+        stubs.get("#{Enginn::Client::BASE_URL}/projects/1/fakes") do |env|
+          ApiStub.new(env).response
+        end
+      end
+
+      it 'returns true' do
+        expect(fakes_index.fetch).to be true
+      end
+    end
+
+    context 'when the request has failed' do
+      before do
+        stubs.get("#{Enginn::Client::BASE_URL}/projects/1/fakes") do
+          [
+            500,
+            { 'Content-Type' => 'application/json' },
+            { error: { foo: 'this is an error' } }
+          ]
+        end
+      end
+
+      it 'does not raise errors' do
+        expect { fakes_index.fetch }.not_to raise_error
+      end
+
+      it 'returns false' do
+        expect(fakes_index.fetch).to be false
+      end
+
+      it 'fills in #errors' do
+        fakes_index.fetch
+        expect(fakes_index.errors).not_to be_empty
+      end
+    end
+  end
+
   describe '#each' do
     let(:fakes_index) { FakesIndex.new(project) }
 

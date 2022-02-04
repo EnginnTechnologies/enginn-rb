@@ -11,7 +11,7 @@ module Enginn
   # from Enumerable) is called. While {#each}-ing, new API request will be
   # issued when the end of a page is reached. Note that when using {#page}, only
   # the given page is reached for.
-  # One can also force fetching manually using {#fetch!}.
+  # One can also force fetching manually using {#fetch}.
   #
   # @example
   #   takes = project.takes.where(synthesis_text_cont: 'hello')
@@ -24,7 +24,7 @@ module Enginn
     # @api private
     # @return [Enginn::Resource]
     def self.resource
-      raise NotImplementedError # REVIEW: not sure this is intended to be directly used...
+      raise "resource is not overriden for #{self}"
     end
 
     # @api private
@@ -35,7 +35,7 @@ module Enginn
 
     include Enumerable
 
-    attr_reader :project
+    attr_reader :project, :errors
     attr_accessor :filters, :pagination
 
     # @param project [Enginn::Project] The parent project of the indexed resource
@@ -43,6 +43,7 @@ module Enginn
       @project = project
       @filters = {}
       @pagination = { current: 1 }
+      @errors = []
     end
 
     # @yieldparam item [Enginn::Resource]
@@ -89,14 +90,26 @@ module Enginn
     # Fetch the current page from the API. Resulting items of the collection are
     # wrapped in the corresponding {Enginn::Resource} subclass.
     #
-    # @return [Enginn::ResourceIndex]
+    # @return [true] if the request has been successfull
     def fetch!
       response = request
       @pagination = response[:pagination]
       @collection = response[:result].map do |attributes|
         self.class.resource.new(@project, attributes)
       end
-      self
+      true
+    end
+
+    # Same as {#fetch!} but return false instead of raising an exception.
+    # Also fill in {#errors} with the server response.
+    # @see fetch!
+    # @return [Boolean]
+    def fetch
+      fetch!
+      true
+    rescue Faraday::Error => e
+      @errors << e.response
+      false
     end
 
     # @return [String]
