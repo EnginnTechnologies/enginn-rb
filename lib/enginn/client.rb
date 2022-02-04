@@ -31,30 +31,11 @@ module Enginn
       @connection
     end
 
-    # Retrieve one or multiple project(s).
+    # Retrieve the projects the account have access to.
     #
-    # If no discriminant is given, return a {Enginn::ProjectsIndex} with no
-    # filters. If a Hash is given, return a {Enginn::ProjectsIndex} filtered
-    # with the given Hash.
-    # If a String is given, return a {Enginn::Project} with its UID set as the
-    # given String.
-    #
-    # @example
-    #   client.projects # => Enginn::ProjectsIndex
-    #   client.projects(name: 'New World') # => Enginn::ProjectsIndex
-    #   client.projects('<uid>') # => Enginn::Project
-    #
-    # @param discriminant [nil, String, Hash]
-    # @return [Enginn::Project, Enginn::ProjectsIndex]
-    def projects(discriminant = nil)
-      case discriminant
-      when String
-        Project.new(self, { uid: discriminant })
-      when Hash
-        ProjectsIndex.new(self).where(discriminant)
-      else
-        ProjectsIndex.new(self)
-      end
+    # @return [Enginn::ProjectsIndex]
+    def projects
+      ProjectsIndex.new(self)
     end
   end
 end

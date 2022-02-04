@@ -14,46 +14,16 @@ module Enginn
       super(self, attributes)
     end
 
-    # Retrieve one or multiple characters(s).
-    #
-    # If no discriminant is given, return a {Enginn::CharactersIndex} with no
-    # filters. If a Hash is given, return a {Enginn::CharactersIndex} filtered
-    # with the given Hash.
-    # If a String is given, return a {Enginn::Character} with its ID set as the
-    # given String.
-    #
-    # @param discriminant [nil, String, Hash]
-    # @return [Enginn::Character, Enginn::CharactersIndex]
-    def characters(discriminant = nil)
-      case discriminant
-      when String
-        Character.new(self, { id: discriminant })
-      when Hash
-        CharactersIndex.new(self, discriminant)
-      else
-        CharactersIndex.new(self)
-      end
+    # Retrieve the characters present in this project.
+    # @return [Enginn::CharactersIndex]
+    def characters
+      CharactersIndex.new(self)
     end
 
-    # Retrieve one or multiple takes(s).
-    #
-    # If no discriminant is given, return a {Enginn::TakesIndex} with no
-    # filters. If a Hash is given, return a {Enginn::TakesIndex} filtered
-    # with the given Hash.
-    # If a String is given, return a {Enginn::Take} with its ID set as the
-    # given String.
-    #
-    # @param discriminant [nil, String, Hash]
-    # @return [Enginn::Take, Enginn::TakesIndex]
-    def takes(discriminant = nil)
-      case discriminant
-      when String
-        Take.new(self, { id: discriminant })
-      when Hash
-        TakesIndex.new(self, discriminant)
-      else
-        TakesIndex.new(self)
-      end
+    # Retrieve the takes present in this project.
+    # @return [Enginn::TakesIndex]
+    def takes
+      TakesIndex.new(self)
     end
 
     # @api private

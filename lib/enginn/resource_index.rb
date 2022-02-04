@@ -9,12 +9,13 @@ module Enginn
   #
   # Actual API requests are only issued when the {#each} method (or any method
   # from Enumerable) is called. While {#each}-ing, new API request will be
-  # issued when the end of a page is reached.
+  # issued when the end of a page is reached. Note that when using {#page}, only
+  # the given page is reached for.
   # One can also force fetching manually using {#fetch!}.
   #
   # @example
-  #   characters = project.characters.where(scene_id: '12345').per(50)
-  #   characters.map(&:name)
+  #   takes = project.takes.where(synthesis_text_cont: 'hello')
+  #   takes.map(&:character_name)
   #
   # @abstract Override the {.resource} method to implement.
   class ResourceIndex
