@@ -96,7 +96,7 @@ RSpec.describe Enginn::ResourceIndex do
       end
 
       it 'raises an error' do
-        expect { fakes_index.fetch! }.to raise_error(Faraday::Error)
+        expect { fakes_index.fetch! }.to raise_error(Enginn::HTTPError)
       end
     end
   end

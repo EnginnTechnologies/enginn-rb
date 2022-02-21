@@ -70,7 +70,7 @@ RSpec.describe Enginn::Resource do
     context 'when the request has failed' do
       it 'raises an error' do
         resource.id = 0
-        expect { resource.fetch! }.to raise_error(Faraday::Error)
+        expect { resource.fetch! }.to raise_error(Enginn::HTTPError)
       end
     end
   end
@@ -187,7 +187,7 @@ RSpec.describe Enginn::Resource do
       let(:resource) { FakeResource.new(project, { id: 0 }) }
 
       it 'raises an error' do
-        expect { resource.save! }.to raise_error(Faraday::Error)
+        expect { resource.save! }.to raise_error(Enginn::HTTPError)
       end
     end
   end
@@ -292,7 +292,7 @@ RSpec.describe Enginn::Resource do
       let(:resource) { FakeResource.new(project, id: 0) }
 
       it 'raises an error' do
-        expect { resource.destroy! }.to raise_error(Faraday::Error)
+        expect { resource.destroy! }.to raise_error(Enginn::HTTPError)
       end
     end
   end
