@@ -2,15 +2,14 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+Bundler.require(:development)
 require 'enginn'
 require 'irb'
 
-module Enginn
-  class Client
-    BASE_URL = ENV['ENGINN_BASE_URL'] || BASE_URL
-  end
+@client = Enginn::Client.new(api_token: ENV['ENGINN_API_TOKEN'])
+@client.connection do |conn|
+  conn.url_prefix = ENV['ENGINN_BASE_URL'] || Enginn::Client::BASE_URL
+  conn.response :logger
 end
-
-client = Enginn::Client.new(api_token: ENV['ENGINN_API_TOKEN'])
 
 IRB.start(__FILE__)

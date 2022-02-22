@@ -8,27 +8,34 @@ module Enginn
 
     attr_reader :api_token, :adapter
 
-    # Public: Create a new client.
-    #
-    # :api_token - The String API token to use for this client.
-    # :adapter   - The Symbol Faraday adapter to use (default: Faraday.default_adapter)
+    # @param api_token [String] The API token to use
+    # @param adapter [Symbol] The Faraday adapter to use
     def initialize(api_token:, adapter: Faraday.default_adapter)
       @api_token = api_token
       @adapter = adapter
     end
 
-    # Public: Get a Faraday connection to the API with relevant middlewares (authorization and JSON)
+    # Get a connection to the API.
     #
-    # If a block is given, yields the Faraday::Connection.
-    #
-    # Returns a Faraday::Connection.
+    # @yieldparam connection [Faraday::Connection] if a block is given
+    # @return [Faraday::Connection]
     def connection
       @connection ||= Faraday.new(BASE_URL) do |conn|
+        conn.adapter @adapter
         conn.request :authorization, 'Bearer', -> { @api_token }
         conn.request :json
         conn.response :json
+        conn.response :enginn_raise_error
       end
-      block_given? ? yield(@connection) : @connection
+      yield(@connection) if block_given?
+      @connection
+    end
+
+    # Retrieve the projects the account have access to.
+    #
+    # @return [Enginn::ProjectsIndex]
+    def projects
+      ProjectsIndex.new(self)
     end
   end
 end

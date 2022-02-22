@@ -11,9 +11,14 @@ group :development do
   gem 'rubocop-performance', '~> 1.13', require: false
   gem 'rubocop-rake', '~> 0.6.0', require: false
   gem 'rubocop-rspec', '~> 2.7', require: false
+  gem 'yard', '~> 0.9.27', require: false
 end
 
 group :test do
-  gem 'simplecov', require: false
   gem 'rspec', '~> 3.0'
+  gem 'simplecov', require: false
+end
+
+group :development, :test do
+  gem 'debug', '~> 1.4'
 end

@@ -1,8 +1,6 @@
 # Enginn
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/enginn`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+The official gem to interact with the [Enginn API](https://app.enginn.tech/api/docs/index.html).
 
 ## Installation
 
@@ -22,7 +20,31 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```rb
+# Create a client
+client = Enginn::Client.new(api_token: 'xxxxx')
+
+# Retrieve a project
+project = client.projects.where(id: 'xxxxx').first
+
+# Manipulate collections
+characters = project.characters.where(gender_eq: 'male')
+characters.each do |character|
+    # ...
+end
+
+# Update a character
+character = project.characters.first
+character.name = 'Pilou'
+character.save!
+
+# Create a new character
+character = Enginn::Character.new(project, name: 'Raph', gender: 'male', ...)
+character.save!
+
+# Destroy a character
+character.destroy!
+```
 
 ## Development
 
@@ -32,7 +54,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/enginn.
+Bug reports and pull requests are welcome on GitHub at https://github.com/EnginnTechnologies/enginn-rb.
 
 ## License
 
