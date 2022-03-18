@@ -20,6 +20,12 @@ module Enginn
       CharactersIndex.new(self)
     end
 
+    # Retrieve the line_tags present in this project.
+    # @return [Enginn::LineTagsIndex]
+    def line_tags
+      LineTagsIndex.new(self)
+    end
+
     # Retrieve the takes present in this project.
     # @return [Enginn::TakesIndex]
     def takes
