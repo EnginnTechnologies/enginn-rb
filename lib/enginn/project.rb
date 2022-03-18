@@ -20,6 +20,12 @@ module Enginn
       CharactersIndex.new(self)
     end
 
+    # Retrieve the scenes present in this project.
+    # @return [Enginn::ScenesIndex]
+    def scenes
+      ScenesIndex.new(self)
+    end
+
     # Retrieve the lines present in this project.
     # @return [Enginn::LinesIndex]
     def lines
