@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class String
-  def underscore
+  def to_underscore
     gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
       .gsub(/([a-z\d])([A-Z])/, '\1_\2')
       .tr('-', '_')
