@@ -132,7 +132,7 @@ module Enginn
     end
 
     def request(method)
-      resource_name = self.class.name.split('::').last.downcase
+      resource_name = self.class.name.split('::').last.to_underscore
       params = %i[post patch].include?(method) ? { resource_name => @attributes } : {}
       response = @project.client.connection.public_send(method, route, params)
       JSON.parse(JSON[response.body], symbolize_names: true)
