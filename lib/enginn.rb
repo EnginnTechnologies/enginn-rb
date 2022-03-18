@@ -8,6 +8,7 @@ require_relative 'enginn/error'
 
 require_relative 'enginn/resource'
 require_relative 'enginn/character'
+require_relative 'enginn/test_synthesis'
 require_relative 'enginn/take'
 require_relative 'enginn/line'
 require_relative 'enginn/line_tag'
