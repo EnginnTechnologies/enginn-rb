@@ -20,6 +20,12 @@ module Enginn
       CharactersIndex.new(self)
     end
 
+    # Retrieve the synthesis exports present in this project.
+    # @return [Enginn::SynthesisExportsIndex]
+    def synthesis_exports
+      SynthesisExportsIndex.new(self)
+    end
+
     # Retrieve the scenes present in this project.
     # @return [Enginn::ScenesIndex]
     def scenes
