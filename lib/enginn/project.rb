@@ -50,6 +50,12 @@ module Enginn
       TakesIndex.new(self)
     end
 
+    # Retrieve the take_batches present in this project.
+    # @return [Enginn::TakeBatchesIndex]
+    def take_batches
+      TakeBatchesIndex.new(self)
+    end
+
     # @api private
     def route
       "#{self.class.path}/#{@attributes[:id]}"
