@@ -20,6 +20,14 @@ module Enginn
       CharactersIndex.new(self)
     end
 
+    # Retrieve the dictionary entries present in this project.
+    # @return [Enginn::DictionaryEntriesIndex]
+    def dictionary_entries
+      DictionaryEntriesIndex.new(self)
+    end
+
+    alias dictionary dictionary_entries
+
     # Retrieve the synthesis exports present in this project.
     # @return [Enginn::SynthesisExportsIndex]
     def synthesis_exports
