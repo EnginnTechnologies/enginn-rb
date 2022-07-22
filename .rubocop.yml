@@ -10,7 +10,7 @@ AllCops:
   NewCops: enable
   Exclude:
     - bin/**/*
-    - vendor/**/*
+    - vendor/**/* # Fix missing gem in CI when using `bundler-cache: true`
 
 # ------------------------------------------------------------------------------
 # DEPARTMENT LAYOUT
@@ -32,7 +32,6 @@ Layout/LineLength:
 Metrics/BlockLength:
   Exclude:
   - spec/**/*
-  - vendor/**/* # Fix Gem::MissingSpecError in CI when using bundle cache
 
 # ------------------------------------------------------------------------------
 # DEPARTMENT STYLE
