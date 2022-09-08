@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'string'
-
 require_relative 'enginn/version'
 require_relative 'enginn/client'
 require_relative 'enginn/error'
