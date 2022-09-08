@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'string_utils'
+
 module Enginn
   # A Resource can be a Character, a Take, or anything described in the
   # Enginn API doc (https://app.enginn.tech/api/docs).
@@ -132,7 +134,7 @@ module Enginn
     end
 
     def request(method)
-      resource_name = self.class.name.split('::').last.to_underscore
+      resource_name = StringUtils.underscore(self.class.name.split('::').last)
       params = %i[post patch].include?(method) ? { resource_name => @attributes } : {}
       response = @project.client.connection.public_send(method, route, params)
       JSON.parse(JSON[response.body], symbolize_names: true)
