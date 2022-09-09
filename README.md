@@ -1,4 +1,6 @@
-[![CI](https://github.com/EnginnTechnologies/enginn-rb-internal/actions/workflows/ci.yml/badge.svg)](https://github.com/EnginnTechnologies/enginn-rb-internal/actions/workflows/ci.yml)
+[![CI](https://github.com/EnginnTechnologies/enginn-rb/actions/workflows/ci.yml/badge.svg)](https://github.com/EnginnTechnologies/enginn-rb/actions/workflows/ci.yml)
+[![CD](https://github.com/EnginnTechnologies/enginn-rb/actions/workflows/cd.yml/badge.svg)](https://github.com/EnginnTechnologies/enginn-rb/actions/workflows/cd.yml)
+[![Gem Version](https://badge.fury.io/rb/enginn.svg)](https://badge.fury.io/rb/enginn)
 
 # Enginn
 
@@ -21,6 +23,9 @@ Or install it yourself as:
     $ gem install enginn
 
 ## Usage
+
+Visit the [API documentation](https://www.rubydoc.info/github/EnginnTechnologies/enginn-rb/)
+for more details.
 
 ```rb
 # Create a client
@@ -57,6 +62,10 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/EnginnTechnologies/enginn-rb.
+
+## Changelog
+
+See [CHANGELOG.md](https://github.com/EnginnTechnologies/enginn-rb/blob/main/CHANGELOG.md).
 
 ## License
 

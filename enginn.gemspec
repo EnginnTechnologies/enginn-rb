@@ -5,8 +5,8 @@ require_relative 'lib/enginn/version'
 Gem::Specification.new do |spec|
   spec.name = 'enginn'
   spec.version = Enginn::VERSION
-  spec.authors = ['Rémi Durieu']
-  spec.email = ['remi.durieu@enginn.tech']
+  spec.authors = ['Enginn Technologies']
+  spec.email = ['mail@enginn.tech']
 
   spec.summary = 'Official Enginn API wrapper for Ruby.'
   spec.homepage = 'https://github.com/EnginnTechnologies/enginn-rb'
@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/EnginnTechnologies/enginn-rb'
-  # spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+  spec.metadata['changelog_uri'] = "https://github.com/EnginnTechnologies/enginn-rb/blob/v#{Enginn::VERSION}/CHANGELOG.md"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
@@ -35,7 +35,7 @@ Gem::Specification.new do |spec|
 
   # For more information and examples about making a new gem, checkout our
   # guide at: https://bundler.io/guides/creating_gem.html
-  spec.metadata = {
-    'rubygems_mfa_required' => 'true'
-  }
+  # spec.metadata = {
+  #   'rubygems_mfa_required' => 'true'
+  # }
 end
