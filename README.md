@@ -1,3 +1,5 @@
+[![CI](https://github.com/EnginnTechnologies/enginn-rb-internal/actions/workflows/ci.yml/badge.svg)](https://github.com/EnginnTechnologies/enginn-rb-internal/actions/workflows/ci.yml)
+
 # Enginn
 
 The official gem to interact with the [Enginn API](https://app.enginn.tech/api/docs/index.html).

@@ -10,6 +10,7 @@ AllCops:
   NewCops: enable
   Exclude:
     - bin/**/*
+    - vendor/**/* # Fix missing gem in CI when using `bundler-cache: true`
 
 # ------------------------------------------------------------------------------
 # DEPARTMENT LAYOUT

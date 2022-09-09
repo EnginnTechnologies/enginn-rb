@@ -13,7 +13,7 @@ module Enginn
   # instance method.
   #
   # @example
-  #   character = Enginn::Character(project, { id: 42 })
+  #   character = Enginn::Character(project, { id: "00000000-0000-0000-0000-000000000000" })
   #   character.name # NoMethodError
   #   character.fetch!
   #   character.name # => 'Rocky'
@@ -24,11 +24,11 @@ module Enginn
   # creation of a new Resource.
   #
   # @example
-  #   color = Enginn::Color.new(project, { code: '#16161D' })
-  #   color.save # POST request (i.e. a new color created)
-  #   color.id # => 24
-  #   color.name = 'Eigengrau'
-  #   color.save # PATCH request (i.e. the color is updated)
+  #   scene = Enginn::Scene.new(project, { name: 'Grand Finale' })
+  #   scene.save # POST request (i.e. a new scene created)
+  #   scene.id # => "00000000-0000-0000-0000-000000000000"
+  #   scene.name = 'The End'
+  #   scene.save # PATCH request (i.e. the scene is updated)
   #
   # @abstract Override the {.path} method to implement.
   class Resource
