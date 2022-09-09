@@ -18,4 +18,6 @@ jobs:
         with:
           ruby-version: 2.6
           bundler-cache: true
+      - run: git config user.email "mail@enginn.tech"
+      - run: git config user.name "Enginn Technologies"
       - run: bundle exec rake release
