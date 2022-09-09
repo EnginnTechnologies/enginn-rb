@@ -12,6 +12,9 @@ AllCops:
     - bin/**/*
     - vendor/**/* # Fix missing gem in CI when using `bundler-cache: true`
 
+Gemspec/RequireMFA:
+  Enabled: false
+
 # ------------------------------------------------------------------------------
 # DEPARTMENT LAYOUT
 # ------------------------------------------------------------------------------
