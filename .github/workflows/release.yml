@@ -37,4 +37,4 @@ jobs:
           gem build enginn.gemspec --output pkg/${{ steps.package_name.outputs.name }}
 
       - name: Push to RubyGems
-        run: gem push pkg/${{ steps.package_name.outputs.name }}
+        run: gem push -V pkg/${{ steps.package_name.outputs.name }}
