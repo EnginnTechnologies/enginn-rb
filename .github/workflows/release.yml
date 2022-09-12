@@ -9,9 +9,6 @@ jobs:
     name: Build & Push
     runs-on: ubuntu-latest
 
-    env:
-      GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -22,19 +19,15 @@ jobs:
           ruby-version: 2.6
           bundler-cache: true
 
-      - name: Extract version number
-        id: extract_version
-        run: |
-          echo "::set-output name=version::$(ruby -e "load 'lib/enginn/version.rb'; puts Enginn::VERSION")"
-
-      - name: Construct package name
-        id: package_name
-        run: echo "::set-output name=name::enginn-${{ steps.extract_version.outputs.version }}.gem"
-
       - name: Build the gem
+        id: build
         run: |
-          mkdir pkg
-          gem build enginn.gemspec --output pkg/${{ steps.package_name.outputs.name }}
+          gem build enginn.gemspec
+          echo "::set-output name=package_name::$(ls *.gem)"
 
       - name: Push to RubyGems
-        run: gem push -V pkg/${{ steps.package_name.outputs.name }}
+        run: |
+          curl --fail --data-binary @${{ steps.build.outputs.package_name }} \
+              -H 'Authorization:${{ secrets.RUBYGEMS_API_KEY }}' \
+              -H 'Content-Type: application/octet-stream' \
+              https://rubygems.org/api/v1/gems
