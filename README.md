@@ -1,5 +1,5 @@
 [![CI](https://github.com/EnginnTechnologies/enginn-rb/actions/workflows/ci.yml/badge.svg)](https://github.com/EnginnTechnologies/enginn-rb/actions/workflows/ci.yml)
-[![CD](https://github.com/EnginnTechnologies/enginn-rb/actions/workflows/cd.yml/badge.svg)](https://github.com/EnginnTechnologies/enginn-rb/actions/workflows/cd.yml)
+[![Release](https://github.com/EnginnTechnologies/enginn-rb/actions/workflows/release.yml/badge.svg)](https://github.com/EnginnTechnologies/enginn-rb/actions/workflows/release.yml)
 [![Gem Version](https://badge.fury.io/rb/enginn.svg)](https://badge.fury.io/rb/enginn)
 
 # Enginn
