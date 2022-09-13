@@ -8,9 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 # Unreleased
 (nothing yet!)
 
-## [0.1.0] - 2022-09-09
+## [0.1.1] - 2022-09-13
 ### Added
 - Initial working set of functionalities.
 
-[Unreleased]: https://github.com/EnginnTechnologies/enginn-rb/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/EnginnTechnologies/enginn-rb/releases/tag/v0.1.0
+[Unreleased]: https://github.com/EnginnTechnologies/enginn-rb/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/EnginnTechnologies/enginn-rb/releases/tag/v0.1.1
